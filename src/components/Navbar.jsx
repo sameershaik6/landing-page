@@ -1,22 +1,91 @@
-import React from 'react';
-import Box from '@mui/material/Box'
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
+import React, { useState } from 'react';
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Box,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  useTheme,
+  useMediaQuery,
+  Typography
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Navbar = () => {
-    return (
-        <AppBar position="fixed" color="primary">
-            <Toolbar sx={{ justifyContent: 'center' }}>
-                <Box>
-                    <Button color="inherit" component="a" href="#home">Home</Button>
-                    <Button color="inherit" component="a" href="#about">About</Button>
-                    <Button color="inherit" component="a" href="#services">Services</Button>
-                    <Button color="inherit" component="a" href="#contact">Contact</Button>
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  const menuItems = [
+    { label: 'Home', href: '#home' },
+    { label: 'About', href: '#about' },
+    { label: 'Services', href: '#services' },
+    { label: 'Contact', href: '#contact' }
+  ];
+
+  return (
+    <>
+      <AppBar position="fixed" color="primary">
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>My Site</Typography>
+
+          {isMobile ? (
+            <>
+              <IconButton
+                edge="end"
+                color="inherit"
+                onClick={() => setOpenDrawer(true)}
+              >
+                <MenuIcon />
+              </IconButton>
+
+              <Drawer
+                anchor="right"
+                open={openDrawer}
+                onClose={() => setOpenDrawer(false)}
+              >
+                <Box
+                  sx={{ width: 250 }}
+                  role="presentation"
+                  onClick={() => setOpenDrawer(false)}
+                >
+                  <List>
+                    {menuItems.map(item => (
+                      <ListItem button key={item.label} component="a" href={item.href}>
+                        <ListItemText primary={item.label} />
+                      </ListItem>
+                    ))}
+                  </List>
                 </Box>
-            </Toolbar>
-        </AppBar>
-    )
-}
+              </Drawer>
+            </>
+          ) : (
+            <Box>
+              {menuItems.map(item => (
+                <Button
+                  key={item.label}
+                  color="inherit"
+                  component="a"
+                  href={item.href}
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </Box>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      {/* Optional: add spacing so content doesn't hide behind fixed AppBar */}
+      <Toolbar />
+    </>
+  );
+};
+
 
 export default Navbar;
