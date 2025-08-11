@@ -14,8 +14,10 @@ import {
   Typography
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-const Navbar = () => {
+const Navbar = ({mode,setMode}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -78,6 +80,11 @@ const Navbar = () => {
               ))}
             </Box>
           )}
+          <IconButton color='inherit' onClick={() => setMode(mode === "light"? "dark" : "light")}>
+            {
+              mode === "light" ? <Brightness4Icon /> :<Brightness7Icon />
+            }
+          </IconButton>
         </Toolbar>
       </AppBar>
 
